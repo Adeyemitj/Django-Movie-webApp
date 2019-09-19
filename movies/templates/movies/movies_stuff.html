@@ -18,8 +18,9 @@
     	<div class="wrapper">
     		<nav class="nav">
     			<div class="container">
-    				<div class="nav__menu">
-    					<a class="nav__header" href="/">Clever Movie</a>
+
+                    <div class="nav__menu">
+    					<a class="nav__header" href="/">Tboost Movie</a>
                         <div class="col-md-5 pull-right">
                         	<form name="search" action="" class="form-inline">
                         		<div class="form-group">
@@ -29,28 +30,50 @@
                         	</form>
                         </div>
 
-                        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-create">Create</button>
+                        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-create">Create New Movie</button>
     				</div>
     			</div>
     		</nav>
 
             <section class="result">
             	<div class="container">
+                    <!--Show notification -->
+					{% if messages %}
+						{% for message in messages %}
+							<div class="alert alert-{{message.tags}}">
+								<a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{message}}
+							</div>
+
+                    	{% endfor %}
+                    {% endif %}
+
+                    <!-- Show all movvies -->
             		<div class="movies">
             			{% for movie in search_result %}
                             <div class="movies__item">
                                 <i class="movies__item-star fa fa-star hide"></i>
                                 <p class="movies__item-rating hide">{{ movie.fields.Rating }}/10</p>
+                                <button type="button" class="movies__item-expander hide" data-toggle="modal" data-target="#modal-{{movie.id}}">View Details</button>
                             	<img class="movies__item-image" src="{{ movie.fields.Pictures.0.url }}" alt="" />
                                 <div class="movies__item-title">
                                 	<p>{{ movie.fields.Name }}</p>
                                 </div>
                             </div>
+							{% include 'movies/detail-modal.html' %}
+                        	{% include 'movies/edit-modal.html' %}
                         {% endfor %}
             		</div>
             	</div>
             </section>
-    	</div>
+
+                <nav class="nav nav-inverse">
+                    <a href="/"><h6>&copy; <i>T-BOOST TECHNOLOGY, 2019</i></h6></a>
+
+                </nav>
+
+            </div>
+
 
         {% include "movies/create-modal.html" %}
 
